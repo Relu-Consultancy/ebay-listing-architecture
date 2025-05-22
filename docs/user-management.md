@@ -59,3 +59,25 @@ role = eBayAccountUserRole.objects.create(
 
 print(role.get_role_display())  # Output: Admin
 print(user.get_full_name())     # Output: Alice Smith
+
+```
+
+```
++----------------+           +----------------+            +-----------------------+
+|     User       |           |  eBayAccount   |            | eBayAccountUserRole   |
+|----------------|           |----------------|            |-----------------------|
+| id (PK)        |           | id (PK)        |            | id (PK)               |
+| email          |           | ebay_user_id   |            | user_id (FK) ---------+-------> User.id
+| first_name     |           | access_token   |            | ebay_account_id (FK) -+-------> eBayAccount.id
+| last_name      |           | refresh_token  |            | role (Admin, Creator, |
+| ...            |           | expires_at     |            |       Reviewer, etc.) |
++----------------+           +----------------+            +-----------------------+
+
+Relationships:
+User 1 <-----> * eBayAccountUserRole * <-----> 1 eBayAccount
+
+Explanation:
+- One User can have multiple roles on different eBay accounts (or the same account).
+- One eBayAccount can have multiple users assigned with different roles.
+- eBayAccountUserRole is the join model linking Users and eBayAccounts with a specific role.
+```
